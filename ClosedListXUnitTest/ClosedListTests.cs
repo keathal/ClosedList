@@ -149,13 +149,7 @@ namespace ClosedListXUnitTest
             customList.Add(1);
             customList.Add(15);
             customList.MoveNext();
-            Assert.Equal(5, customList.Current);
-            Assert.Equal(4, customList.Previous);
-            Assert.Equal(1, customList.Next);
             customList.MoveNext();
-            Assert.Equal(1, customList.Current);
-            Assert.Equal(5, customList.Previous);
-            Assert.Equal(15, customList.Next);
             customList.MoveBack();
 
             Assert.Equal(5, customList.Current);
