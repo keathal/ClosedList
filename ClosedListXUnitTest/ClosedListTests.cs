@@ -137,6 +137,8 @@ namespace ClosedListXUnitTest
             Assert.Equal(15, customList.Next);
         }
 
+
+
         [Fact]
         public void MoveNextAndBack()
         {
@@ -147,7 +149,13 @@ namespace ClosedListXUnitTest
             customList.Add(1);
             customList.Add(15);
             customList.MoveNext();
+            Assert.Equal(5, customList.Current);
+            Assert.Equal(4, customList.Previous);
+            Assert.Equal(1, customList.Next);
             customList.MoveNext();
+            Assert.Equal(1, customList.Current);
+            Assert.Equal(5, customList.Previous);
+            Assert.Equal(15, customList.Next);
             customList.MoveBack();
 
             Assert.Equal(5, customList.Current);
@@ -156,7 +164,7 @@ namespace ClosedListXUnitTest
         }
 
         [Fact]
-        public void HeadReached()
+        public void HeadReachedOnce()
         {
             int eventCount = 0;
             var customList = new CustomList<int>();
@@ -168,9 +176,27 @@ namespace ClosedListXUnitTest
             customList.Add(15);
             customList.MoveNext();
             customList.MoveBack();
-            customList.MoveBack();
 
             Assert.Equal(1, eventCount);
+        }
+
+        [Fact]
+        public void HeadReachedTwice()
+        {
+            int eventCount = 0;
+            var customList = new CustomList<int>();
+            customList.HeadReached += (customList, e) => { eventCount++; };
+
+            customList.Add(4);
+            customList.Add(5);
+            customList.Add(1);
+            customList.Add(15);
+            customList.MoveNext();
+            customList.MoveBack(2);
+            customList.MoveNext(2);
+
+            Assert.Equal(1, customList.Next);
+            Assert.Equal(2, eventCount);
         }
 
     }

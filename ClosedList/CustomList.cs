@@ -141,7 +141,7 @@ namespace ClosedList
         {
             for (int i = 0; i < step; i++)
             {
-                if (!Current.Equals(Head))
+                if (Count > 1)
                 {
                     int index = IndexOf(Current);
                     Next = Current;
@@ -150,11 +150,11 @@ namespace ClosedList
                     if (Current.Equals(Head))
                     {
                         HeadReached?.Invoke(this, Head);
-                        Previous = default(T);
+                        Previous = Count > 2 ? _contents[Count - 1] : Next;
                     }
-                    else 
+                    else
                     {
-                        Previous = _contents[index - 2];
+                        Previous = index == 0 ? Head : _contents[index-2];
                     }
                 }
                 else break;
@@ -165,18 +165,19 @@ namespace ClosedList
         {
             for (int i = 0; i < step; i++)
             {
-                int index = IndexOf(Current);
-                if (index < Count - 1)
+                if (Count > 1)
                 {
+                    int index = IndexOf(Current);
                     Previous = Current;
                     Current = Next;
-                    if (index + 2 < Count)
+                    if (Current.Equals(Head))
                     {
-                        Next = _contents[index + 2];
+                        HeadReached?.Invoke(this, Head);
+                        Next = _contents[1];
                     }
                     else
                     {
-                        Next = default(T);
+                        Next = index + 2 < Count ? _contents[index + 2] : Head;
                     }
                 }
                 else break;
